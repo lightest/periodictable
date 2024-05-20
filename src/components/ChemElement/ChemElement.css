@@ -1,0 +1,31 @@
+.chem-element
+{
+	border: 1px solid black;
+	padding: 3px;
+}
+
+.chem-element .element-symbol
+{
+	font-size: 22px;
+	font-weight: bold;
+	text-transform: capitalize;
+}
+
+.chem-element .element-chemical-group {
+	text-transform: capitalize;
+}
+
+.element-atomic-number {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.chem-element .data-row
+{
+	display: flex;
+}
+
+.chem-element .data-row .element-atomic-mass
+{
+	margin-left: auto;
+}
