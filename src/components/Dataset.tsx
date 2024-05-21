@@ -83,11 +83,11 @@ const COLUMN_NAMES_REMAP = {
 
 function processDataset(dataset, fields = [])
 {
-	console.log(dataset);
 	const t = performance.now();
 	const cols = dataset.Table.Columns.Column;
 	const elementsData = dataset.Table.Row;
-	const chemElements = new Array(elementsData.length);
+	const chemicalElementsList = new Array(elementsData.length);
+	const chemicalElementsLUT = {};
 	const dataKeysToIndices = {};
 
 	for (let i = 0; i < cols.length; i++)
@@ -97,23 +97,31 @@ function processDataset(dataset, fields = [])
 
 	for (let i = 0; i < elementsData.length; i++)
 	{
-		chemElements[i] = {};
+		chemicalElementsList[i] = {};
 
 		for (let j = 0; j < fields.length; j++)
 		{
 			const fieldName = fields[j];
 			const localFieldName = COLUMN_NAMES_REMAP[fieldName] || fieldName;
 			const dataIdx = dataKeysToIndices[fieldName];
-			chemElements[i][localFieldName] = elementsData[i].Cell[dataIdx];
+			chemicalElementsList[i][localFieldName] = elementsData[i].Cell[dataIdx];
 		}
+
+		chemicalElementsLUT[chemicalElementsList[i].symbol] = chemicalElementsList[i];
 	}
 
 	console.log("Data processing took:", performance.now() - t);
 
-	return chemElements;
+	return {
+		chemicalElementsList,
+		chemicalElementsLUT
+	};
 }
 
-const chemicalElements = processDataset(
+const {
+	chemicalElementsList,
+	chemicalElementsLUT
+} = processDataset(
 	dataset,
 	[
 		"AtomicNumber",
@@ -125,7 +133,10 @@ const chemicalElements = processDataset(
 	]
 );
 
+console.log(chemicalElementsLUT);
+
 export {
 	planets,
-	chemicalElements
+	chemicalElementsList,
+	chemicalElementsLUT
 };

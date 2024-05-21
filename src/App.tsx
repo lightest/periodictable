@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { planets, chemicalElements } from "./components/Dataset.tsx";
+import { planets, chemicalElementsList, chemicalElementsLUT } from "./components/Dataset.tsx";
 import PlanetList from "./components/PlanetList.tsx";
 
 import ChemElement from "./components/ChemElement/ChemElement.tsx";
@@ -72,7 +72,8 @@ function App()
 		</p>
 
 		<PeriodicTable
-			chemElements={chemicalElements}>
+			chemElements={chemicalElementsList}
+			chemElementLUT={chemicalElementsLUT}>
 		</PeriodicTable>
 	</>
 	)
