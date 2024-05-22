@@ -1,17 +1,19 @@
 import "./ChemElement.css";
 
 
-function getElemenPositioning(electronConfig)
+function getElemenPositioning(chemEl)
 {
+	const electronConfig = chemEl.electronConfiguration;
 	// Electron configuration is the distribution of electrons in atomic or molecular orbitals.
 	const bracketIndex = electronConfig.indexOf("]");
 	const outermostElectronShell = electronConfig.substring(bracketIndex + 1).trim();
 
 	// TODO: potentially employ regexes for identifying subshells as well.
 	const subshells = outermostElectronShell.split(" ");
-	const quantumNumbers = new Array(subshells.length).fill(0);
 	const groupBlocks = {};
 	let valentElectrons = 0;
+	let period = 0;
+	let group = 0;
 
 	// Even though our dataset presents already sorted subshells, we go extra mile to ensure we always pick the highest.
 	// This will improve our chances of getting the correct value, should the notation in the incoming dataset change.
@@ -20,18 +22,33 @@ function getElemenPositioning(electronConfig)
 		const match = subshells[i].match(/(\d+)([spdf]+)(\d+)/);
 		if (match)
 		{
-			groupBlocks[match[1]] = {
-				n: parseInt(match[0], 10),
-				electrons: parseInt(match[2], 10)
+			// s, p, d, f orbital types.
+			const orbitalType = match[2];
+
+			groupBlocks[orbitalType] =
+			{
+				n: parseInt(match[1], 10),
+				electrons: parseInt(match[3], 10)
 			};
 
-			quantumNumbers[i] = groupBlocks[match[1]].n;
-			valentElectrons += groupBlocks[match[1]].electrons;
+			// Period of the element is the max quantum number amon outer most shells.
+			period = Math.max(period, groupBlocks[orbitalType].n);
+
+			if (orbitalType === "s" || orbitalType === "p" || orbitalType === "d")
+			{
+				valentElectrons += groupBlocks[orbitalType].electrons;
+			}
 		}
 	}
 
-	const period = Math.max(...quantumNumbers);
-	const group = 0;
+	if (groupBlocks["p"] !== undefined && groupBlocks["d"] === undefined)
+	{
+		group = valentElectrons + 10;
+	}
+	else
+	{
+		group = valentElectrons;
+	}
 
 	console.log("location for", electronConfig, period, group)
 
@@ -43,7 +60,7 @@ function getElemenPositioning(electronConfig)
 
 export default function ChemElement({ chemEl })
 {
-	const { row, col } = getElemenPositioning(chemEl.electronConfiguration);
+	const { row, col } = getElemenPositioning(chemEl);
 
 	console.log("Chem el render", chemEl, row);
 
