@@ -1,16 +1,16 @@
 import "./ChemElement.css";
 
-
 function getElemenPositioning(chemEl)
 {
 	const electronConfig = chemEl.electronConfiguration;
+
 	// Electron configuration is the distribution of electrons in atomic or molecular orbitals.
 	const bracketIndex = electronConfig.indexOf("]");
-	const outermostElectronShell = electronConfig.substring(bracketIndex + 1).trim();
+	const outermostElectronShellStr = electronConfig.substring(bracketIndex + 1).trim();
 
 	// TODO: potentially employ regexes for identifying subshells as well.
-	const subshells = outermostElectronShell.split(" ");
-	const groupBlocks = {};
+	const subshells = outermostElectronShellStr.split(" ");
+	const outerElectronShell = {};
 	let valentElectrons = 0;
 	let period = 0;
 	let group = 0;
@@ -25,23 +25,40 @@ function getElemenPositioning(chemEl)
 			// s, p, d, f orbital types.
 			const orbitalType = match[2];
 
-			groupBlocks[orbitalType] =
+			outerElectronShell[orbitalType] =
 			{
 				n: parseInt(match[1], 10),
 				electrons: parseInt(match[3], 10)
 			};
 
 			// Period of the element is the max quantum number amon outer most shells.
-			period = Math.max(period, groupBlocks[orbitalType].n);
+			period = Math.max(period, outerElectronShell[orbitalType].n);
 
 			if (orbitalType === "s" || orbitalType === "p" || orbitalType === "d")
 			{
-				valentElectrons += groupBlocks[orbitalType].electrons;
+				valentElectrons += outerElectronShell[orbitalType].electrons;
 			}
 		}
 	}
 
-	if (groupBlocks["p"] !== undefined && groupBlocks["d"] === undefined)
+	// Lanthanides and Actinides are a special case. They are placed two rows below the table.
+	// Their actual periods are 6 and 7 respectively.
+	if (chemEl.group === "Lanthanide" || chemEl.group === "Actinide")
+	{
+		period += 2;
+
+		if (outerElectronShell["f"] !== undefined)
+		{
+			valentElectrons += outerElectronShell["f"].electrons;
+		}
+	}
+
+	// TODO: identify noble gas by it's electron configuration.
+	if (chemEl.group === "Noble gas")
+	{
+		group = 18;
+	}
+	else if (outerElectronShell["p"] !== undefined && outerElectronShell["d"] === undefined)
 	{
 		group = valentElectrons + 10;
 	}
