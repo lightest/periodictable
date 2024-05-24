@@ -66,7 +66,7 @@ const COLUMN_NAMES_REMAP = {
 	"Symbol": "symbol",
 	"Name": "name",
 	"AtomicMass": "atomicMass",
-	"CPKHexColor": "",
+	"CPKHexColor": "hexColor",
 	"ElectronConfiguration": "electronConfiguration",
 	"Electronegativity": "electronegativity",
 	"AtomicRadius": "atomicRadius",
@@ -129,7 +129,8 @@ const {
 		"ElectronConfiguration",
 		"Symbol",
 		"GroupBlock",
-		"Name"
+		"Name",
+		"CPKHexColor"
 	]
 );
 

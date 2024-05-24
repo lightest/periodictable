@@ -83,7 +83,8 @@ export default function ChemElement({ chemEl })
 
 	const style = {
 		gridRowStart: row,
-		gridColumnStart: col
+		gridColumnStart: col,
+		// background: `#${chemEl.hexColor}`
 	};
 
 	return(
