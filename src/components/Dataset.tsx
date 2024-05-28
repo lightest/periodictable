@@ -1,4 +1,5 @@
 import dataset from "../../data/PubChemElements_all.json";
+import { ChemElement } from "../types/ChemElement";
 
 const planets = [
 	{
@@ -81,13 +82,13 @@ const COLUMN_NAMES_REMAP = {
 	"YearDiscovered": "yearDiscovered",
 };
 
-function processDataset(dataset, fields = [])
+function processDataset(dataset, fields:any[] = [])
 {
 	const t = performance.now();
 	const cols = dataset.Table.Columns.Column;
 	const elementsData = dataset.Table.Row;
-	const chemicalElementsList = new Array(elementsData.length);
-	const chemicalElementsLUT = {};
+	const chemicalElementsList: ChemElement[] = new Array(elementsData.length);
+	const chemicalElementsLUT: Record<string, ChemElement> = {};
 	const dataKeysToIndices = {};
 
 	for (let i = 0; i < cols.length; i++)

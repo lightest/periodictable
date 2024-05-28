@@ -4,6 +4,14 @@
 	padding: 3px;
 	margin: 3px;
 	width: 111px;
+	cursor: pointer;
+	background: white;
+	transition: transform .3s ease;
+}
+
+.chem-element.inspecting
+{
+	transition: transform 0s ease;
 }
 
 .chem-element .element-symbol

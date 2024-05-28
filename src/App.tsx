@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react"
 import { planets, chemicalElementsList, chemicalElementsLUT } from "./components/Dataset.tsx";
 import PlanetList from "./components/PlanetList.tsx";
 
@@ -7,15 +7,15 @@ import PeriodicTable from "./components/PeriodicTable/PeriodicTable.tsx";
 
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
 
 function App()
 {
-	const [count, setCount] = useState(0);
+	const [previewElement, setPreviewElement] = useState(chemicalElementsList[0]);
 
-	function onSetCountClick()
+	function onChemElementClick(chemEl)
 	{
-		setCount(count + 1);
+		setPreviewElement(chemEl);
 	}
 
 	return (
@@ -29,24 +29,13 @@ function App()
 			</a>
 		</div>
 
-		<div className="card">
-			<button onClick={onSetCountClick}>
-			count is {count}
-		</button>
-
-		<p>
-			Edit <code>src/App.tsx</code> and save to test HMR
-		</p>
-		</div>
-		<p className="read-the-docs">
-			Click on the Vite and React logos to learn more
-		</p>
-
-		<ChemElementPreviewArea></ChemElementPreviewArea>
+		<ChemElementPreviewArea
+			previewElement={previewElement}></ChemElementPreviewArea>
 
 		<PeriodicTable
 			chemElements={chemicalElementsList}
-			chemElementLUT={chemicalElementsLUT}>
+			chemElementLUT={chemicalElementsLUT}
+			onChemElementClick={onChemElementClick}>
 		</PeriodicTable>
 	</>
 	)

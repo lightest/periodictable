@@ -4,9 +4,8 @@ import { chemicalElementsList, chemicalElementsLUT } from "../Dataset.tsx";
 import ChemElementLarge from "../ChemElementLarge/ChemElementLarge.tsx";
 
 
-export default function ChemElementPreviewArea()
+export default function ChemElementPreviewArea({ previewElement })
 {
-
 	const [searchVal, setSearchVal] = useState("");
 	const [chemElPreview, setChemElPreview] = useState(chemicalElementsLUT.Li);
 
@@ -64,7 +63,7 @@ export default function ChemElementPreviewArea()
 				onChange={onSearchValChange}/>
 
 			<ChemElementLarge
-				chemEl={chemElPreview}>
+				chemEl={previewElement}>
 			</ChemElementLarge>
 		</>
 	);

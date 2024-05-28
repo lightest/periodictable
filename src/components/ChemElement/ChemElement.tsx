@@ -1,5 +1,7 @@
 import "./ChemElement.css";
 
+const ROTATION_ANGLE = 15;
+
 function getElemenPositioning(chemEl)
 {
 	const electronConfig = chemEl.electronConfiguration;
@@ -75,9 +77,32 @@ function getElemenPositioning(chemEl)
 	}
 }
 
-export default function ChemElement({ chemEl })
+export default function ChemElement({ chemEl, onClick })
 {
 	const { row, col } = getElemenPositioning(chemEl);
+
+	function handleMouseMove(e)
+	{
+		const elBCR = e.currentTarget.getBoundingClientRect();
+		const x = ((e.clientX - elBCR.x) / elBCR.width) * 2 - 1;
+		const y = ((e.clientY - elBCR.y) / elBCR.height) * 2 - 1;
+		e.currentTarget.classList.add("inspecting");
+		e.currentTarget.style.transform = `perspective(800px) rotateX(${-y * ROTATION_ANGLE}deg) rotateY(${x * ROTATION_ANGLE}deg)`;
+	}
+
+	function handleMouseOut(e)
+	{
+		e.currentTarget.classList.remove("inspecting");
+		e.currentTarget.style.transform = "perspective(800px) rotateX(0) rotateY(0)";
+	}
+
+	function handleClick()
+	{
+		if (typeof onClick === "function")
+		{
+			onClick(chemEl);
+		}
+	}
 
 	console.log("Chem el render", chemEl, row);
 
@@ -88,7 +113,10 @@ export default function ChemElement({ chemEl })
 	};
 
 	return(
-		<div className="chem-element" style={style}>
+		<div className="chem-element" style={style}
+			onMouseMove={handleMouseMove}
+			onMouseOut={handleMouseOut}
+			onClick={handleClick}>
 			<div className="data-row">
 				<div className="element-atomic-number">{chemEl.atomicNumber}</div>
 				<div className="element-atomic-mass">{chemEl.atomicMass}</div>
