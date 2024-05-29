@@ -1,8 +1,23 @@
 import "./ChemElement.css";
+import { iChemElement } from "../../types/ChemElement";
 
-const ROTATION_ANGLE = 15;
+const ROTATION_ANGLE = 19;
 
-function getElemenPositioning(chemEl)
+const ELEMENT_GROUP_TO_CSS_CLASS: Record<string, string> =
+{
+	"Nonmetal": "nonmetal",
+	"Noble gas": "noble-gas",
+	"Halogen": "halogen",
+	"Alkali metal": "alkali-metal",
+	"Alkaline earth metal": "alkaline-earth-metal",
+	"Metalloid": "metalloid",
+	"Transition metal": "transition-metal",
+	"Post-transition metal": "post-transition-metal",
+	"Lanthanide": "lanthanide",
+	"Actinide": "actinide"
+};
+
+function getElemenPositioning(chemEl: iChemElement)
 {
 	const electronConfig = chemEl.electronConfiguration;
 
@@ -77,7 +92,14 @@ function getElemenPositioning(chemEl)
 	}
 }
 
-export default function ChemElement({ chemEl, onClick })
+interface componentProps {
+	chemEl: iChemElement,
+	idx: number,
+	className: string,
+	onClick: Function
+};
+
+export default function ChemElement({ chemEl, idx, className, onClick }: componentProps)
 {
 	const { row, col } = getElemenPositioning(chemEl);
 
@@ -113,7 +135,8 @@ export default function ChemElement({ chemEl, onClick })
 	};
 
 	return(
-		<div className="chem-element" style={style}
+		<div className={`chem-element ${ELEMENT_GROUP_TO_CSS_CLASS[chemEl.group]} ${className}`} style={style}
+			data-idx={idx}
 			onMouseMove={handleMouseMove}
 			onMouseOut={handleMouseOut}
 			onClick={handleClick}>

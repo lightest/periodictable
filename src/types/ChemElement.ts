@@ -1,4 +1,4 @@
-export interface ChemElement
+export interface iChemElement
 {
 	atomicNumber: number,
 	atomicMass: number,

@@ -1,6 +1,6 @@
-import { useState } from "react"
-import { planets, chemicalElementsList, chemicalElementsLUT } from "./components/Dataset.tsx";
-import PlanetList from "./components/PlanetList.tsx";
+import { createContext, useState } from "react"
+import { iChemElement } from "./types/ChemElement.ts";
+import { chemicalElementsList, chemicalElementsLUT } from "./components/Dataset.tsx";
 
 import ChemElementPreviewArea from "./components/ChemElementPreviewArea/ChemElementPreviewArea.tsx";
 import PeriodicTable from "./components/PeriodicTable/PeriodicTable.tsx";
@@ -9,11 +9,14 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import "./App.css";
 
+
+export const PreviewElementContext = createContext(chemicalElementsList[0]);
+
 function App()
 {
 	const [previewElement, setPreviewElement] = useState(chemicalElementsList[0]);
 
-	function onChemElementClick(chemEl)
+	function onChemElementClick(chemEl: iChemElement)
 	{
 		setPreviewElement(chemEl);
 	}
@@ -29,13 +32,14 @@ function App()
 			</a>
 		</div>
 
-		<ChemElementPreviewArea
-			previewElement={previewElement}></ChemElementPreviewArea>
+		<PreviewElementContext.Provider value={ previewElement }>
+			<ChemElementPreviewArea></ChemElementPreviewArea>
+		</PreviewElementContext.Provider>
 
 		<PeriodicTable
 			chemElements={chemicalElementsList}
-			chemElementLUT={chemicalElementsLUT}
-			onChemElementClick={onChemElementClick}>
+			chemElementsLUT={chemicalElementsLUT}
+			elementClickCb={onChemElementClick}>
 		</PeriodicTable>
 	</>
 	)

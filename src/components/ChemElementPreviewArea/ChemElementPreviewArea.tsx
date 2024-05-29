@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { chemicalElementsList, chemicalElementsLUT } from "../Dataset.tsx";
+import { PreviewElementContext } from "../../App.tsx";
 
 import ChemElementLarge from "../ChemElementLarge/ChemElementLarge.tsx";
 
 
-export default function ChemElementPreviewArea({ previewElement })
+export default function ChemElementPreviewArea()
 {
 	const [searchVal, setSearchVal] = useState("");
 	const [chemElPreview, setChemElPreview] = useState(chemicalElementsLUT.Li);
+	const previewElement = useContext(PreviewElementContext);
 
 	function searchChemicalElement(searchVal = "")
 	{

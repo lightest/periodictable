@@ -1,5 +1,5 @@
 import dataset from "../../data/PubChemElements_all.json";
-import { ChemElement } from "../types/ChemElement";
+import { iChemElement } from "../types/ChemElement";
 
 const planets = [
 	{
@@ -87,8 +87,8 @@ function processDataset(dataset, fields:any[] = [])
 	const t = performance.now();
 	const cols = dataset.Table.Columns.Column;
 	const elementsData = dataset.Table.Row;
-	const chemicalElementsList: ChemElement[] = new Array(elementsData.length);
-	const chemicalElementsLUT: Record<string, ChemElement> = {};
+	const chemicalElementsList: iChemElement[] = new Array(elementsData.length);
+	const chemicalElementsLUT: Record<string, iChemElement> = {};
 	const dataKeysToIndices = {};
 
 	for (let i = 0; i < cols.length; i++)
