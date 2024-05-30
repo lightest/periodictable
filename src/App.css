@@ -40,3 +40,64 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.chem-element.nonmetal,
+.chem-element-large.nonmetal
+{
+	background: #ffffc5;
+}
+
+.chem-element.noble-gas,
+.chem-element-large.noble-gas
+{
+	background: #ffe6c0;
+}
+
+.chem-element.halogen,
+.chem-element-large.halogen
+{
+	background: #ffffc5;
+}
+
+.chem-element.alkali-metal,
+.chem-element-large.alkali-metal
+{
+	background: #ffc3c3;
+}
+
+.chem-element.alkaline-earth-metal,
+.chem-element-large.alkaline-earth-metal
+{
+	background: #d5d5ff;
+}
+
+.chem-element.metalloid,
+.chem-element-large.metalloid
+{
+	background: #e0edbc;
+}
+
+.chem-element.transition-metal,
+.chem-element-large.transition-metal
+{
+	background: #bcddff;
+}
+
+.chem-element.post-transition-metal,
+.chem-element-large.post-transition-metal
+{
+	background: #bfffbf;
+}
+
+.chem-element.lanthanide,
+.chem-element-large.lanthanide
+{
+	background: #b3ffff;
+}
+
+.chem-element.actinide,
+.chem-element-large.actinide
+{
+	background: #c7ffed;
+}

@@ -1,8 +1,8 @@
-import "./PeriodicTable.css";
-import { iChemElement } from "../../types/ChemElement.ts";
-import ChemElement from "../ChemElement/ChemElement.tsx";
+import { useState, useMemo, memo, useCallback } from "react";
 
-import { useState } from "react";
+import "./PeriodicTable.css";
+import { iChemElement } from "../../types/iChemElement.ts";
+import ChemElement from "../ChemElement/ChemElement.tsx";
 
 interface componentProps
 {
@@ -11,31 +11,36 @@ interface componentProps
 	elementClickCb: Function
 }
 
-export default function PeriodicTable({chemElements, elementClickCb}: componentProps)
+const PeriodicTable = memo(function PeriodicTable({ chemElements, elementClickCb }: componentProps)
 {
 	const [selectedElementAN, setSelectedElementAN] = useState(0);
 
-	function onChemElementClick(chemEl: iChemElement)
-	{
-		setSelectedElementAN(chemEl.atomicNumber);
-
-		if (typeof elementClickCb === "function")
+	const onChemElementClick = useCallback(function onChemElementClick(chemEl: iChemElement)
 		{
-			elementClickCb(chemEl);
-		}
-	}
+			setSelectedElementAN(chemEl.atomicNumber);
 
-	const chemicalElementsList = chemElements.map((ce: iChemElement, idx: number) =>
+			if (typeof elementClickCb === "function")
+			{
+				elementClickCb(chemEl);
+			}
+		},
+		[]
+	);
+
+	const chemicalElementsList = useMemo(() => chemElements.map((ce: iChemElement, idx: number) =>
 		<ChemElement
 			idx={idx}
-			className={selectedElementAN === ce.atomicNumber ? "selected": ""}
+			// className={selectedElementAN === ce.atomicNumber ? "selected" : ""}
+			className=""
 			key={ce.atomicNumber}
 			chemEl={ce}
 			onClick={onChemElementClick}>
 		</ChemElement>
-	);
+	), []);
 
-	return(
+	return (
 		<div className="periodic-table">{chemicalElementsList}</div>
 	);
-}
+});
+
+export default PeriodicTable;

@@ -1,5 +1,5 @@
 import dataset from "../../data/PubChemElements_all.json";
-import { iChemElement } from "../types/ChemElement";
+import { iChemElement } from "../types/iChemElement";
 
 const COLUMN_NAMES_REMAP = {
 	"AtomicNumber": "atomicNumber",
@@ -19,6 +19,20 @@ const COLUMN_NAMES_REMAP = {
 	"Density": "density",
 	"GroupBlock": "group",
 	"YearDiscovered": "yearDiscovered",
+};
+
+const ELEMENT_GROUP_TO_CSS_CLASS: Record<string, string> =
+{
+	"Nonmetal": "nonmetal",
+	"Noble gas": "noble-gas",
+	"Halogen": "halogen",
+	"Alkali metal": "alkali-metal",
+	"Alkaline earth metal": "alkaline-earth-metal",
+	"Metalloid": "metalloid",
+	"Transition metal": "transition-metal",
+	"Post-transition metal": "post-transition-metal",
+	"Lanthanide": "lanthanide",
+	"Actinide": "actinide"
 };
 
 function processDataset(dataset, fields:any[] = [])
@@ -78,5 +92,6 @@ console.log(chemicalElementsLUT);
 
 export {
 	chemicalElementsList,
-	chemicalElementsLUT
+	chemicalElementsLUT,
+	ELEMENT_GROUP_TO_CSS_CLASS
 };

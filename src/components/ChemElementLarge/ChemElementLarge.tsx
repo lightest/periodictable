@@ -1,7 +1,17 @@
-export default function ChemElementLarge({ chemEl })
+import "./ChemElementLarge.css";
+
+import { iChemElement } from "../../types/iChemElement";
+import { ELEMENT_GROUP_TO_CSS_CLASS } from "../Dataset";
+
+interface iComponentnProps
+{
+	chemEl: iChemElement
+};
+
+export default function ChemElementLarge({ chemEl }: iComponentnProps)
 {
 	return(
-		<div className="chem-el-large">
+		<div className={`chem-element-large ${ELEMENT_GROUP_TO_CSS_CLASS[chemEl.group]}`}>
 			<div className="data-row">
 				<div className="element-atomic-number">{chemEl.atomicNumber}</div>
 				<div className="element-atomic-mass">{chemEl.atomicMass}</div>

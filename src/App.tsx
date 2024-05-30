@@ -1,13 +1,13 @@
-import { createContext, useState } from "react"
-import { iChemElement } from "./types/ChemElement.ts";
+import { createContext, useState, useCallback } from "react";
+import { iChemElement } from "./types/iChemElement.ts";
 import { chemicalElementsList, chemicalElementsLUT } from "./components/Dataset.tsx";
 
 import ChemElementPreviewArea from "./components/ChemElementPreviewArea/ChemElementPreviewArea.tsx";
 import PeriodicTable from "./components/PeriodicTable/PeriodicTable.tsx";
+import "./App.css";
 
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import "./App.css";
 
 
 export const PreviewElementContext = createContext(chemicalElementsList[0]);
@@ -16,10 +16,20 @@ function App()
 {
 	const [previewElement, setPreviewElement] = useState(chemicalElementsList[0]);
 
-	function onChemElementClick(chemEl: iChemElement)
-	{
-		setPreviewElement(chemEl);
-	}
+	console.log("App render");
+
+	// function onChemElementClick(chemEl: iChemElement)
+	// {
+	// 	setPreviewElement(() => chemEl);
+	// }
+
+	const onChemElementClick = useCallback(
+		function onChemElementClick(chemEl: iChemElement)
+		{
+			setPreviewElement(() => chemEl);
+		},
+		[]
+	);
 
 	return (
 	<>
@@ -32,9 +42,11 @@ function App()
 			</a>
 		</div>
 
-		<PreviewElementContext.Provider value={ previewElement }>
+		{/* <PreviewElementContext.Provider value={ previewElement }>
 			<ChemElementPreviewArea></ChemElementPreviewArea>
-		</PreviewElementContext.Provider>
+		</PreviewElementContext.Provider> */}
+
+			<ChemElementPreviewArea chemEl={ previewElement }></ChemElementPreviewArea>
 
 		<PeriodicTable
 			chemElements={chemicalElementsList}

@@ -1,21 +1,8 @@
 import "./ChemElement.css";
-import { iChemElement } from "../../types/ChemElement";
+import { iChemElement } from "../../types/iChemElement";
+import { ELEMENT_GROUP_TO_CSS_CLASS } from "../Dataset";
 
-const ROTATION_ANGLE = 19;
-
-const ELEMENT_GROUP_TO_CSS_CLASS: Record<string, string> =
-{
-	"Nonmetal": "nonmetal",
-	"Noble gas": "noble-gas",
-	"Halogen": "halogen",
-	"Alkali metal": "alkali-metal",
-	"Alkaline earth metal": "alkaline-earth-metal",
-	"Metalloid": "metalloid",
-	"Transition metal": "transition-metal",
-	"Post-transition metal": "post-transition-metal",
-	"Lanthanide": "lanthanide",
-	"Actinide": "actinide"
-};
+const ROTATION_ANGLE = 15;
 
 function getElemenPositioning(chemEl: iChemElement)
 {

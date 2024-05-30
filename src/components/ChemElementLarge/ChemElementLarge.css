@@ -1,0 +1,25 @@
+.chem-element-large
+{
+	box-shadow: 0 0 0 1px rgb(0 0 0 / 20%);
+	display: flex;
+	margin: auto;
+	width: 150px;
+	padding: 16px;
+	flex-direction: column;
+}
+
+.chem-element-large .data-row
+{
+	display: flex;
+}
+
+.chem-element-large .data-row *:nth-child(2)
+{
+	margin-left: auto;
+}
+
+.chem-element-large .element-symbol
+{
+	font-size: 64px;
+	font-weight: bold;
+}

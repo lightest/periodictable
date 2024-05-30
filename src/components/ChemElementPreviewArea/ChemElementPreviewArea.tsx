@@ -3,17 +3,25 @@ import { chemicalElementsList, chemicalElementsLUT } from "../Dataset.tsx";
 import { PreviewElementContext } from "../../App.tsx";
 
 import ChemElementLarge from "../ChemElementLarge/ChemElementLarge.tsx";
+import { iChemElement } from "../../types/iChemElement.ts";
 
-
-export default function ChemElementPreviewArea()
+interface iChemElementPreviewAreaProps
 {
+	chemEl: iChemElement
+}
+
+export default function ChemElementPreviewArea({ chemEl }: iChemElementPreviewAreaProps)
+{
+	console.log("preview area render");
+	// const previewElement = useContext(PreviewElementContext);
 	const [searchVal, setSearchVal] = useState("");
-	const [chemElPreview, setChemElPreview] = useState(chemicalElementsLUT.Li);
-	const previewElement = useContext(PreviewElementContext);
+	const [chemElPreview, setChemElPreview] = useState(chemEl);
+	// console.log(previewElement);
+	console.log(chemEl, chemElPreview);
 
 	function searchChemicalElement(searchVal = "")
 	{
-		let result = chemicalElementsList[0];
+		let result = chemEl;
 
 		if (searchVal.length === 0)
 		{
@@ -65,7 +73,7 @@ export default function ChemElementPreviewArea()
 				onChange={onSearchValChange}/>
 
 			<ChemElementLarge
-				chemEl={previewElement}>
+				chemEl={chemElPreview}>
 			</ChemElementLarge>
 		</>
 	);
