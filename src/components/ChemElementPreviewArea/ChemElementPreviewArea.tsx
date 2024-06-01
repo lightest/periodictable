@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { chemicalElementsList, chemicalElementsLUT } from "../Dataset.tsx";
 import { PreviewElementContext } from "../../App.tsx";
 
@@ -11,13 +11,54 @@ interface iChemElementPreviewAreaProps
 	previewSetter: Function
 }
 
+interface iElementData
+{
+
+};
+
+async function fetchElementData(elementName: string)
+{
+	const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${elementName}`;
+	let elementData:iElementData = {};
+
+	try
+	{
+		const resp = await fetch(url);
+		elementData = await resp.json();
+	}
+	catch (err)
+	{
+		console.error();
+	}
+
+	console.log(elementData);
+
+	return elementData;
+}
+
 export default function ChemElementPreviewArea({ chemEl: chemElProp, previewSetter }: iChemElementPreviewAreaProps)
 {
 	console.log("preview area render");
 	// const previewElement = useContext(PreviewElementContext);
+	const [isLoading, setIsLoading] = useState(true);
 	const [searchVal, setSearchVal] = useState("");
 	const [chemElPreview, setChemElPreview] = useState(chemElProp);
+	const [detailedElementData, setDetailedElementData] = useState({});
 	console.log(chemElProp, chemElPreview);
+
+	useEffect(() =>
+	{
+		async function requestData()
+		{
+			setIsLoading(true);
+			const data = await fetchElementData(chemElProp.name);
+			setDetailedElementData(data);
+			setIsLoading(false);
+		}
+
+		requestData();
+	}, [chemElProp]);
+
 
 	// useEffect(() =>
 	// {
@@ -81,6 +122,14 @@ export default function ChemElementPreviewArea({ chemEl: chemElProp, previewSett
 			<ChemElementLarge
 				chemEl={chemElProp}>
 			</ChemElementLarge>
+
+			{isLoading ? "" :
+				<>
+					<div className="img-container">
+						<img src={detailedElementData.thumbnail.source}></img>
+					</div>
+				</>
+			}
 		</>
 	);
 }
