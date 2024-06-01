@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { chemicalElementsList, chemicalElementsLUT } from "../Dataset.tsx";
 import { PreviewElementContext } from "../../App.tsx";
 
@@ -7,21 +7,26 @@ import { iChemElement } from "../../types/iChemElement.ts";
 
 interface iChemElementPreviewAreaProps
 {
-	chemEl: iChemElement
+	chemEl: iChemElement,
+	previewSetter: Function
 }
 
-export default function ChemElementPreviewArea({ chemEl }: iChemElementPreviewAreaProps)
+export default function ChemElementPreviewArea({ chemEl: chemElProp, previewSetter }: iChemElementPreviewAreaProps)
 {
 	console.log("preview area render");
 	// const previewElement = useContext(PreviewElementContext);
 	const [searchVal, setSearchVal] = useState("");
-	const [chemElPreview, setChemElPreview] = useState(chemEl);
-	// console.log(previewElement);
-	console.log(chemEl, chemElPreview);
+	const [chemElPreview, setChemElPreview] = useState(chemElProp);
+	console.log(chemElProp, chemElPreview);
+
+	// useEffect(() =>
+	// {
+	// 	setChemElPreview(chemEl);
+	// }, [chemEl]);
 
 	function searchChemicalElement(searchVal = "")
 	{
-		let result = chemEl;
+		let result = chemElProp;
 
 		if (searchVal.length === 0)
 		{
@@ -62,8 +67,9 @@ export default function ChemElementPreviewArea({ chemEl }: iChemElementPreviewAr
 		const v = e.currentTarget.value;
 		setSearchVal(v);
 
-		const chemEl = searchChemicalElement(v);
-		setChemElPreview(chemEl);
+		const searchResult = searchChemicalElement(v);
+		// setChemElPreview(chemEl);
+		previewSetter(searchResult);
 	}
 
 	return (
@@ -73,7 +79,7 @@ export default function ChemElementPreviewArea({ chemEl }: iChemElementPreviewAr
 				onChange={onSearchValChange}/>
 
 			<ChemElementLarge
-				chemEl={chemElPreview}>
+				chemEl={chemElProp}>
 			</ChemElementLarge>
 		</>
 	);

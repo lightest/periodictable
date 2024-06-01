@@ -18,19 +18,6 @@ function App()
 
 	console.log("App render");
 
-	// function onChemElementClick(chemEl: iChemElement)
-	// {
-	// 	setPreviewElement(() => chemEl);
-	// }
-
-	const onChemElementClick = useCallback(
-		function onChemElementClick(chemEl: iChemElement)
-		{
-			setPreviewElement(() => chemEl);
-		},
-		[]
-	);
-
 	return (
 	<>
 		<div>
@@ -46,12 +33,16 @@ function App()
 			<ChemElementPreviewArea></ChemElementPreviewArea>
 		</PreviewElementContext.Provider> */}
 
-			<ChemElementPreviewArea chemEl={ previewElement }></ChemElementPreviewArea>
+			<ChemElementPreviewArea
+				chemEl={previewElement}
+				previewSetter={setPreviewElement}>
+			</ChemElementPreviewArea>
 
 		<PeriodicTable
 			chemElements={chemicalElementsList}
 			chemElementsLUT={chemicalElementsLUT}
-			elementClickCb={onChemElementClick}>
+			// elementClickCb={onChemElementClick}>
+			elementClickCb={setPreviewElement}>
 		</PeriodicTable>
 	</>
 	)
