@@ -6,12 +6,13 @@ import ChemElement from "../ChemElement/ChemElement.tsx";
 
 interface componentProps
 {
+	className: string,
 	chemElements: iChemElement[],
 	chemElementsLUT: Record<string, iChemElement>,
 	elementClickCb: Function
 }
 
-const PeriodicTable = memo(function PeriodicTable({ chemElements, elementClickCb }: componentProps)
+const PeriodicTable = memo(function PeriodicTable({ chemElements, elementClickCb, className }: componentProps)
 {
 	const [selectedElementAN, setSelectedElementAN] = useState(0);
 
@@ -39,7 +40,7 @@ const PeriodicTable = memo(function PeriodicTable({ chemElements, elementClickCb
 	), []);
 
 	return (
-		<div className="periodic-table">{chemicalElementsList}</div>
+		<div className={`periodic-table ${className}`}>{chemicalElementsList}</div>
 	);
 });
 

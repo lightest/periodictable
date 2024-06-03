@@ -1,7 +1,6 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0;
   text-align: center;
 }
 
@@ -100,4 +99,9 @@
 .chem-element-large.actinide
 {
 	background: #c7ffed;
+}
+
+.periodic-table-app
+{
+  margin: 128px 0 0 0;
 }

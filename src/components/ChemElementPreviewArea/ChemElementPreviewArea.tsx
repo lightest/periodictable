@@ -6,6 +6,8 @@ import { PreviewElementContext } from "../../App.tsx";
 import ChemElementLarge from "../ChemElementLarge/ChemElementLarge.tsx";
 import { iChemElement } from "../../types/iChemElement.ts";
 
+import "./ChemElementPreviewArea.css"
+
 interface iChemElementPreviewAreaProps
 {
 	chemElProp: iChemElement,
@@ -111,13 +113,13 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 	}
 
 	return (
-		<>
+		<div className="preview-area-container">
 			<input
 				value={searchVal}
 				onChange={onSearchValChange}/>
 
 			<ChemElementFull
 				chemElement={chemElProp}></ChemElementFull>
-		</>
+		</div>
 	);
 }
