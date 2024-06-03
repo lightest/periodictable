@@ -34,7 +34,7 @@ function App()
 		</PreviewElementContext.Provider> */}
 
 			<ChemElementPreviewArea
-				chemEl={previewElement}
+				chemElProp={previewElement}
 				previewSetter={setPreviewElement}>
 			</ChemElementPreviewArea>
 

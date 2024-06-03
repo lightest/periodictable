@@ -1,0 +1,40 @@
+.chem-element-full
+{
+    display: flex;
+    flex-direction: column;
+    background: white;
+    width: 640px;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 20%);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.chem-element-full
+{
+
+}
+
+.chem-element-full .data-row
+{
+    display: flex;
+}
+
+.chem-element-full .img-container
+{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 203px;
+    overflow: hidden;
+}
+
+.chem-element-full .img-container img
+{
+    height: 100%;
+}
+
+.chem-element-full .element-description
+{
+    padding: 16px;
+}

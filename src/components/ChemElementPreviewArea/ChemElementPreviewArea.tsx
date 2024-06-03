@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { chemicalElementsList, chemicalElementsLUT } from "../Dataset.tsx";
+import ChemElementFull from "./ChemElementFull.tsx";
 import { PreviewElementContext } from "../../App.tsx";
 
 import ChemElementLarge from "../ChemElementLarge/ChemElementLarge.tsx";
@@ -7,19 +8,25 @@ import { iChemElement } from "../../types/iChemElement.ts";
 
 interface iChemElementPreviewAreaProps
 {
-	chemEl: iChemElement,
+	chemElProp: iChemElement,
 	previewSetter: Function
 }
 
+interface iThumbNail
+{
+	source: string
+};
+
 interface iElementData
 {
-
+	thumbnail: iThumbNail,
+	extract: string
 };
 
 async function fetchElementData(elementName: string)
 {
 	const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${elementName}`;
-	let elementData:iElementData = {};
+	let elementData: iElementData = {};
 
 	try
 	{
@@ -36,34 +43,25 @@ async function fetchElementData(elementName: string)
 	return elementData;
 }
 
-export default function ChemElementPreviewArea({ chemEl: chemElProp, previewSetter }: iChemElementPreviewAreaProps)
+export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iChemElementPreviewAreaProps)
 {
 	console.log("preview area render");
-	// const previewElement = useContext(PreviewElementContext);
-	const [isLoading, setIsLoading] = useState(true);
-	const [searchVal, setSearchVal] = useState("");
-	const [chemElPreview, setChemElPreview] = useState(chemElProp);
-	const [detailedElementData, setDetailedElementData] = useState({});
-	console.log(chemElProp, chemElPreview);
+	const [searchVal, setSearchVal] = useState<string>("");
+	const [wikiElementData, setDetailedElementData] = useState<iElementData | {}>();
+
+	console.log("current element data v", wikiElementData);
 
 	useEffect(() =>
 	{
 		async function requestData()
 		{
-			setIsLoading(true);
+			console.log("fetching data");
 			const data = await fetchElementData(chemElProp.name);
 			setDetailedElementData(data);
-			setIsLoading(false);
 		}
 
 		requestData();
 	}, [chemElProp]);
-
-
-	// useEffect(() =>
-	// {
-	// 	setChemElPreview(chemEl);
-	// }, [chemEl]);
 
 	function searchChemicalElement(searchVal = "")
 	{
@@ -109,7 +107,6 @@ export default function ChemElementPreviewArea({ chemEl: chemElProp, previewSett
 		setSearchVal(v);
 
 		const searchResult = searchChemicalElement(v);
-		// setChemElPreview(chemEl);
 		previewSetter(searchResult);
 	}
 
@@ -119,17 +116,8 @@ export default function ChemElementPreviewArea({ chemEl: chemElProp, previewSett
 				value={searchVal}
 				onChange={onSearchValChange}/>
 
-			<ChemElementLarge
-				chemEl={chemElProp}>
-			</ChemElementLarge>
-
-			{isLoading ? "" :
-				<>
-					<div className="img-container">
-						<img src={detailedElementData.thumbnail.source}></img>
-					</div>
-				</>
-			}
+			<ChemElementFull
+				chemElement={chemElProp}></ChemElementFull>
 		</>
 	);
 }
