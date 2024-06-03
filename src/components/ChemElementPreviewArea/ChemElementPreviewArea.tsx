@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { chemicalElementsList, chemicalElementsLUT } from "../Dataset.tsx";
+import { chemicalElementsList, chemicalElementsLUT, chemicalElementsLUTByAtomicNumber } from "../Dataset.tsx";
 import ChemElementFull from "./ChemElementFull.tsx";
 import { PreviewElementContext } from "../../App.tsx";
 
@@ -75,7 +75,7 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 		}
 
 		const capitalizedSV = `${searchVal[0].toUpperCase()}${searchVal.substring(1).toLowerCase()}`;
-		const lutResult = chemicalElementsLUT[searchVal] || chemicalElementsLUT[capitalizedSV];
+		const lutResult = chemicalElementsLUT[searchVal] || chemicalElementsLUT[capitalizedSV] || chemicalElementsLUTByAtomicNumber[searchVal];
 
 		if (lutResult)
 		{

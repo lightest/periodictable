@@ -42,6 +42,7 @@ function processDataset(dataset, fields:any[] = [])
 	const elementsData = dataset.Table.Row;
 	const chemicalElementsList: iChemElement[] = new Array(elementsData.length);
 	const chemicalElementsLUT: Record<string, iChemElement> = {};
+	const chemicalElementsLUTByAtomicNumber: Record<string, iChemElement> = {};
 	const dataKeysToIndices = {};
 
 	for (let i = 0; i < cols.length; i++)
@@ -62,19 +63,22 @@ function processDataset(dataset, fields:any[] = [])
 		}
 
 		chemicalElementsLUT[chemicalElementsList[i].symbol] = chemicalElementsList[i];
+		chemicalElementsLUTByAtomicNumber[chemicalElementsList[i].atomicNumber] = chemicalElementsList[i];
 	}
 
 	console.log("Data processing took:", performance.now() - t);
 
 	return {
 		chemicalElementsList,
-		chemicalElementsLUT
+		chemicalElementsLUT,
+		chemicalElementsLUTByAtomicNumber
 	};
 }
 
 const {
 	chemicalElementsList,
-	chemicalElementsLUT
+	chemicalElementsLUT,
+	chemicalElementsLUTByAtomicNumber
 } = processDataset(
 	dataset,
 	[
@@ -93,5 +97,6 @@ console.log(chemicalElementsLUT);
 export {
 	chemicalElementsList,
 	chemicalElementsLUT,
+	chemicalElementsLUTByAtomicNumber,
 	ELEMENT_GROUP_TO_CSS_CLASS
 };
