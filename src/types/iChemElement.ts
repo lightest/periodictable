@@ -3,6 +3,7 @@ export interface iChemElement
 	atomicNumber: number,
 	atomicMass: number,
 	electronConfiguration: string,
+	electronegativity: number,
 	symbol: string,
 	group: string,
 	name: string,
@@ -20,11 +21,12 @@ export class ChemicalElement
 	atomicNumber: number;
 	atomicMass: number;
 	electronConfiguration: string;
+	electronegativity: number;
 	symbol: string;
 	chemicalGroup: string;
 	name: string;
 	hexColor: string;
-	valentElectrons: number;
+	valenceElectrons: number;
 	periodNumber: number;
 	groupNumber: number;
 
@@ -33,12 +35,13 @@ export class ChemicalElement
 		this.atomicNumber = data.atomicNumber;
 		this.atomicMass = data.atomicMass;
 		this.electronConfiguration = data.electronConfiguration;
+		this.electronegativity = data.electronegativity;
 		this.symbol = data.symbol;
 		this.chemicalGroup = data.group;
 		this.name = data.name;
 		this.hexColor = data.hexColor;
 
-		this.valentElectrons = 0;
+		this.valenceElectrons = 0;
 		this.periodNumber = 0;
 		this.groupNumber = 0;
 
@@ -47,17 +50,17 @@ export class ChemicalElement
 
 	parseElectronConfiguration()
 	{
-		const electronConfig = this.electronConfiguration;
+		this.valenceElectrons = 0;
+		this.periodNumber = 0;
 
 		// Electron configuration is the distribution of electrons in atomic or molecular orbitals.
+		const electronConfig = this.electronConfiguration;
 		const bracketIndex = electronConfig.indexOf("]");
 		const outermostElectronShellStr = electronConfig.substring(bracketIndex + 1).trim();
 
 		// TODO: potentially employ regexes for identifying subshells as well.
 		const subshells = outermostElectronShellStr.split(" ");
 		const outerElectronShell:Record<string, iElectronShell> = {};
-		this.valentElectrons = 0;
-		this.periodNumber = 0;
 
 		// Even though our dataset presents already sorted subshells, we go extra mile to ensure we always pick the highest.
 		// This will improve our chances of getting the correct value, should the notation in the incoming dataset change.
@@ -80,7 +83,7 @@ export class ChemicalElement
 
 				if (orbitalType === "s" || orbitalType === "p" || orbitalType === "d")
 				{
-					this.valentElectrons += outerElectronShell[orbitalType].electrons;
+					this.valenceElectrons += outerElectronShell[orbitalType].electrons;
 				}
 			}
 		}
@@ -93,7 +96,7 @@ export class ChemicalElement
 
 			if (outerElectronShell["f"] !== undefined)
 			{
-				this.valentElectrons += outerElectronShell["f"].electrons;
+				this.valenceElectrons += outerElectronShell["f"].electrons;
 			}
 		}
 
@@ -104,11 +107,16 @@ export class ChemicalElement
 		}
 		else if (outerElectronShell["p"] !== undefined && outerElectronShell["d"] === undefined)
 		{
-			this.groupNumber = this.valentElectrons + 10;
+			this.groupNumber = this.valenceElectrons + 10;
 		}
 		else
 		{
-			this.groupNumber = this.valentElectrons;
+			this.groupNumber = this.valenceElectrons;
 		}
+	}
+
+	getBondType()
+	{
+
 	}
 }

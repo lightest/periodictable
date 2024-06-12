@@ -85,6 +85,7 @@ const {
 		"AtomicNumber",
 		"AtomicMass",
 		"ElectronConfiguration",
+		"Electronegativity",
 		"Symbol",
 		"GroupBlock",
 		"Name",
