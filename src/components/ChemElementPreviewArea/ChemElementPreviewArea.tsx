@@ -55,6 +55,8 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 
 	useEffect(() =>
 	{
+		console.log(chemElProp);
+
 		async function requestData()
 		{
 			console.log("fetching data");
