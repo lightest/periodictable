@@ -59,61 +59,6 @@ export class Atom
 
 		return false;
 	}
-
-	establishBond(incomingAtom: Atom)
-	{
-		let bondType: BondType;
-		let sharedElectrons = 0;
-		const electronegativityDelta = Math.abs(this.element.electronegativity - incomingAtom.element.electronegativity);
-		const totalValenceElectrons = this.element.valenceElectrons + incomingAtom.element.valenceElectrons;
-
-		if (totalValenceElectrons === 8 && electronegativityDelta > 0)
-		{
-			// Ionic bond is possible. Transfer electrons from one atom to the other.
-			let acceptorAtom;
-			let donorAtom;
-
-			if (this.element.electronegativity > incomingAtom.element.electronegativity)
-			{
-				acceptorAtom = this;
-				donorAtom = incomingAtom;
-			}
-			else
-			{
-				acceptorAtom = incomingAtom;
-				donorAtom = this;
-			}
-
-			acceptorAtom.element.valenceElectrons += donorAtom.element.valenceElectrons;
-			donorAtom.element.valenceElectrons = 0;
-
-			bondType = "ionic";
-		}
-		else if (totalValenceElectrons)
-		{
-			bondType = "covalent";
-
-		}
-		else
-		{
-			bondType = "metallic";
-		}
-
-		if (bondType !== undefined)
-		{
-			this.bonds.push({
-				atom: incomingAtom,
-				bondType,
-				sharedElectrons
-			});
-
-			incomingAtom.bonds.push({
-				atom: this,
-				bondType,
-				sharedElectrons
-			});
-		}
-	}
 }
 
 export class Molecule
@@ -142,14 +87,76 @@ export class Molecule
 		return valenceEletrons >= 2 && valenceEletrons <= 8;
 	}
 
-	bondWithElement(element: ChemicalElement)
+	bondAtoms(atom1: Atom, atom2: Atom)
 	{
-		if (!this.canBondWith(element))
+		let bondType: BondType;
+		const electronegativityDelta = Math.abs(atom2.element.electronegativity - atom1.element.electronegativity);
+		const totalValenceElectrons = atom2.element.valenceElectrons + atom1.element.valenceElectrons;
+
+		// TODO: this is not complete conditions description for ionic bonds. See SiC molecule.
+		if (totalValenceElectrons === 8 && electronegativityDelta > 0)
 		{
-			return;
+			// Ionic bond is possible. Transfer electrons from one atom to the other.
+			let acceptorAtom;
+			let donorAtom;
+
+			if (atom2.element.electronegativity > atom1.element.electronegativity)
+			{
+				acceptorAtom = atom2;
+				donorAtom = atom1;
+			}
+			else
+			{
+				acceptorAtom = atom1;
+				donorAtom = atom2;
+			}
+
+			acceptorAtom.element.valenceElectrons += donorAtom.element.valenceElectrons;
+			donorAtom.element.valenceElectrons = 0;
+
+			acceptorAtom.bonds.push({
+				atom: donorAtom,
+				bondType: "ionic",
+				sharedElectrons: 0
+			});
+
+			donorAtom.bonds.push({
+				atom: acceptorAtom,
+				bondType: "ionic",
+				sharedElectrons: 0
+			});
+		}
+		else if (totalValenceElectrons >= 8)
+		{
+			const atom1Requirements = 8 - atom1.element.valenceElectrons;
+			const atom2Requirements = 8 - atom2.element.valenceElectrons;
+			const min = Math.min(atom1Requirements, atom2Requirements);
+
+			// TODO: check this.
+
+			atom1.element.valenceElectrons -= min;
+			atom2.element.valenceElectrons -= min;
+
+			atom2.bonds.push({
+				atom: atom1,
+				bondType: "covalent",
+				sharedElectrons: min
+			});
+
+			atom1.bonds.push({
+				atom: atom2,
+				bondType: "covalent",
+				sharedElectrons: min
+			});
+
+		}
+		else
+		{
+			bondType = "metallic";
 		}
 
-
-
+		if (bondType !== undefined)
+		{
+		}
 	}
 }
