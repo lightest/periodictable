@@ -1,6 +1,7 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { chemicalElementsList, chemicalElementsLUT, chemicalElementsLUTByAtomicNumber } from "../Dataset.tsx";
 import ChemElementFull from "./ChemElementFull.tsx";
+import * as Networking from "../../Networking.tsx";
 import { PreviewElementContext } from "../../App.tsx";
 
 import ChemElementLarge from "../ChemElementLarge/ChemElementLarge.tsx";
@@ -40,7 +41,7 @@ async function fetchElementData(elementName: string)
 		console.error();
 	}
 
-	console.log(elementData);
+	// console.log(elementData);
 
 	return elementData;
 }
@@ -50,8 +51,24 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 	console.log("preview area render");
 	const [searchVal, setSearchVal] = useState<string>("");
 	const [wikiElementData, setDetailedElementData] = useState<iElementData | {}>();
+	const [ollamaResponse, setOllamaResponse] = useState<string>("");
 
-	console.log("current element data v", wikiElementData);
+	// console.log("current element data v", wikiElementData);
+
+	// const handleOllamaChat = useCallback(async (prompt: string) => {
+	// 	try {
+	// 		const response = await Networking.fetchOllamaChat(prompt);
+	// 		console.log("Ollama API response:", response);
+	// 		setOllamaResponse(response.response.content);
+	// 	} catch (error) {
+	// 		console.error("Error fetching from Ollama API:", error);
+	// 	}
+	// }, []);
+
+	// // Example usage
+	// useEffect(() => {
+	// 	handleOllamaChat("Tell me about " + chemElProp.name);
+	// }, [chemElProp, handleOllamaChat]);
 
 	useEffect(() =>
 	{
@@ -59,7 +76,7 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 
 		async function requestData()
 		{
-			console.log("fetching data");
+			// console.log("fetching data");
 			const data = await fetchElementData(chemElProp.name);
 			setDetailedElementData(data);
 		}
@@ -122,6 +139,8 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 
 			<ChemElementFull
 				chemElement={chemElProp}></ChemElementFull>
+
+			<div>Ollama response: {ollamaResponse}</div>
 		</div>
 	);
 }

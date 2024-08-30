@@ -1,20 +1,25 @@
-import { createContext, useState, useCallback } from "react";
+import { createContext, useState, useCallback, useEffect } from "react";
 import { iChemElement } from "./types/iChemElement.ts";
 import { chemicalElementsList, chemicalElementsLUT } from "./components/Dataset.tsx";
 
 import ChemElementPreviewArea from "./components/ChemElementPreviewArea/ChemElementPreviewArea.tsx";
 import PeriodicTable from "./components/PeriodicTable/PeriodicTable.tsx";
 import "./App.css";
+import * as Networking from "./Networking.tsx";
 
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-
+window.Networking = Networking
 
 export const PreviewElementContext = createContext(chemicalElementsList[0]);
 
 function App()
 {
 	const [previewElement, setPreviewElement] = useState(chemicalElementsList[0]);
+
+	function elementClickCb(chemEl: iChemElement)
+	{
+		console.log("elementClickCb", chemEl);
+		setPreviewElement(chemEl);
+	}
 
 	console.log("App render");
 
@@ -35,7 +40,7 @@ function App()
 			chemElements={chemicalElementsList}
 			chemElementsLUT={chemicalElementsLUT}
 			// elementClickCb={onChemElementClick}>
-			elementClickCb={setPreviewElement}>
+			elementClickCb={elementClickCb}>
 		</PeriodicTable>
 	</>
 	)
