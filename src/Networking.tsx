@@ -33,7 +33,7 @@ export const fetchOllamaChat = async (prompt: string, options: object = {}) =>
   return response.json();
 };
 
-export async function bondElements(el1: iChemElement, el2: iChemElement)
+export async function bondElements(elements: iChemElement[])
 {
   const resp = await fetch(`${HOST}/api/bondElements`, {
     method: "POST",
@@ -43,7 +43,7 @@ export async function bondElements(el1: iChemElement, el2: iChemElement)
     },
     body: JSON.stringify(
     {
-      el1, el2
+      elements
     })
   })
 
