@@ -1,7 +1,9 @@
 .periodic-table
 {
 	display: grid;
-	grid-template-columns: repeat(18, 1fr);
+	grid-template-columns: repeat(auto-fill, minmax(111px, 1fr));
+	gap: 5px;
+	width: 100%;
 }
 
 .periodic-table.dark
