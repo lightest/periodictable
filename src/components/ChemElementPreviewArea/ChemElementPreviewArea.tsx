@@ -51,7 +51,7 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 	console.log("preview area render");
 	const [searchVal, setSearchVal] = useState<string>("");
 	const [wikiElementData, setDetailedElementData] = useState<iElementData | {}>();
-	const [ollamaResponse, setOllamaResponse] = useState<string>("");
+	const [llmResponse, setLLMResponse] = useState<string>("");
 
 	// console.log("current element data v", wikiElementData);
 
@@ -74,14 +74,22 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 	{
 		console.log(chemElProp);
 
-		async function requestData()
+		async function requestWikiData()
 		{
 			// console.log("fetching data");
 			const data = await fetchElementData(chemElProp.name);
 			setDetailedElementData(data);
 		}
 
-		requestData();
+		async function requestLLMData()
+		{
+			const data = await Networking.describeElement(chemElProp);
+			console.log(data)
+			setLLMResponse(data.response)
+		}
+
+		requestWikiData();
+		// requestLLMData();
 	}, [chemElProp]);
 
 	function searchChemicalElement(searchVal = "")
@@ -140,7 +148,7 @@ export default function ChemElementPreviewArea({ chemElProp, previewSetter }: iC
 			<ChemElementFull
 				chemElement={chemElProp}></ChemElementFull>
 
-			<div>Ollama response: {ollamaResponse}</div>
+			<div>llm response: {llmResponse}</div>
 		</div>
 	);
 }

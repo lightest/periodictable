@@ -1,6 +1,7 @@
 import { createContext, useState, useCallback, useEffect } from "react";
 import { iChemElement } from "./types/iChemElement.ts";
 import { chemicalElementsList, chemicalElementsLUT } from "./components/Dataset.tsx";
+import { EquationInput } from "./components/EquationInput/EquationInput.tsx";
 
 import ChemElementPreviewArea from "./components/ChemElementPreviewArea/ChemElementPreviewArea.tsx";
 import PeriodicTable from "./components/PeriodicTable/PeriodicTable.tsx";
@@ -34,6 +35,8 @@ function App()
 			chemElProp={previewElement}
 			previewSetter={setPreviewElement}>
 		</ChemElementPreviewArea>
+
+		<EquationInput></EquationInput>
 
 		<PeriodicTable
 			className="periodic-table-app"

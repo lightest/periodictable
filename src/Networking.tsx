@@ -58,3 +58,53 @@ export async function bondElements(elements: iChemElement[])
 
     return resp.json();
 }
+
+export async function describeElement(element: iChemElement)
+{
+    const resp = await fetch(
+        `${HOST}/api/describeElement`,
+        {
+            method: "POST",
+            headers:
+            {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(
+            {
+                element
+            })
+        }
+    );
+
+    if (!resp.ok)
+    {
+        throw new Error(`HTTP error! status: ${resp.status}`);
+    }
+
+    return resp.json();
+}
+
+export async function solveChemicalBalanceEquation(equation: string)
+{
+    const resp = await fetch(
+        `${HOST}/api/solveChemicalBalanceEquation`,
+        {
+            method: "POST",
+            headers:
+            {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(
+            {
+                equation
+            })
+        }
+    );
+
+    if (!resp.ok)
+    {
+        throw new Error(`HTTP error! status: ${resp.status}`);
+    }
+
+    return resp.json();
+}
