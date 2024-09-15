@@ -108,3 +108,28 @@ export async function solveChemicalBalanceEquation(equation: string)
 
     return resp.json();
 }
+
+export async function completeChemicalBalanceEquation(incompleteEquation: string)
+{
+    const resp = await fetch(
+        `${HOST}/api/completeBalanceEquation`,
+        {
+            method: "POST",
+            headers:
+            {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(
+            {
+                incompleteEquation
+            })
+        }
+    );
+
+    if (!resp.ok)
+    {
+        throw new Error(`HTTP error! status: ${resp.status}`);
+    }
+
+    return resp.json();
+}

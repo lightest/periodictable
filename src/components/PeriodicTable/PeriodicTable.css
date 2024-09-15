@@ -10,3 +10,9 @@
 {
 	background: #222;
 }
+
+.dragged-element {
+	position: absolute;
+	top: 0;
+	left: 0;
+}

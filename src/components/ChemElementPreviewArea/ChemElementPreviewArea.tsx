@@ -2,9 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { chemicalElementsList, chemicalElementsLUT, chemicalElementsLUTByAtomicNumber } from "../Dataset.tsx";
 import ChemElementFull from "./ChemElementFull.tsx";
 import * as Networking from "../../Networking.tsx";
-import { PreviewElementContext } from "../../App.tsx";
 
-import ChemElementLarge from "../ChemElementLarge/ChemElementLarge.tsx";
 import { iChemElement } from "../../types/iChemElement.ts";
 
 import "./ChemElementPreviewArea.css"

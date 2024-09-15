@@ -1,20 +1,31 @@
 import "./ChemElement.css";
 import { ChemicalElement, iChemElement } from "../../types/iChemElement";
 import { ELEMENT_GROUP_TO_CSS_CLASS } from "../Dataset";
+import { forwardRef } from "react";
 
 const ROTATION_ANGLE = 15;
 
 interface componentProps
 {
 	chemEl: iChemElement,
-	idx: number,
-	className: string,
-	onClick: Function
+	idx?: number,
+	className?: string,
+	onClick?: Function,
+	onMousedown?: Function
 };
 
-export default function ChemElement({ chemEl, idx, className, onClick }: componentProps)
+const ChemElement = forwardRef(({ chemEl, idx, className, onClick, onMousedown }: componentProps, ref) =>
 {
 	const el = new ChemicalElement(chemEl);
+
+	function handleMouseDown(e)
+	{
+		if (typeof onMousedown === "function")
+		{
+			e.preventDefault();
+			onMousedown(chemEl);
+		}
+	}
 
 	function handleMouseMove(e)
 	{
@@ -48,9 +59,11 @@ export default function ChemElement({ chemEl, idx, className, onClick }: compone
 		// background: `#${chemEl.hexColor}`
 	};
 
-	return(
-		<div className={`chem-element ${ELEMENT_GROUP_TO_CSS_CLASS[chemEl.group]} ${className}`} style={style}
+	return (
+		<div ref={ref}
+			className={`chem-element ${ELEMENT_GROUP_TO_CSS_CLASS[chemEl.group]} ${className}`} style={style}
 			data-idx={idx}
+			onMouseDown={handleMouseDown}
 			onMouseMove={handleMouseMove}
 			onMouseOut={handleMouseOut}
 			onClick={handleClick}>
@@ -63,4 +76,6 @@ export default function ChemElement({ chemEl, idx, className, onClick }: compone
 			<div className="element-chemical-group">{chemEl.group}</div>
 		</div>
 	);
-}
+});
+
+export default ChemElement;

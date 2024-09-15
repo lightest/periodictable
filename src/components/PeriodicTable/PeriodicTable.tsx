@@ -1,4 +1,4 @@
-import { useState, useMemo, memo, useCallback } from "react";
+import { useState, useMemo, memo, useCallback, useEffect, useRef } from "react";
 
 import "./PeriodicTable.css";
 import { iChemElement } from "../../types/iChemElement.ts";
@@ -12,9 +12,12 @@ interface componentProps
 	elementClickCb: Function
 }
 
+
 const PeriodicTable = memo(function PeriodicTable({ chemElements, elementClickCb, className }: componentProps)
 {
+	const chemElRef = useRef(null);
 	const [selectedElementAN, setSelectedElementAN] = useState(0);
+	const [draggedElement, setDraggedElement] = useState<iChemElement | null>(null);
 
 	const onChemElementClick = useCallback(function onChemElementClick(chemEl: iChemElement)
 		{
@@ -28,6 +31,53 @@ const PeriodicTable = memo(function PeriodicTable({ chemElements, elementClickCb
 		[]
 	);
 
+	function onChemElementMousedown(e: iChemElement)
+	{
+		setDraggedElement(e)
+	}
+
+	function onMousemove(e)
+	{
+		if (draggedElement)
+		{
+			e.preventDefault();
+			const chemElDOM = chemElRef.current;
+			if (!chemElDOM)
+			{
+				return;
+			}
+
+			chemElDOM.style.left = `${e.clientX}px`;
+			chemElDOM.style.top = `${e.clientY}px`;
+		}
+	}
+
+	function onMouseup()
+	{
+		setDraggedElement(null);
+	}
+
+	function addEventListeners()
+	{
+		window.addEventListener("mousemove", onMousemove);
+		window.addEventListener("mouseup", onMouseup);
+	}
+
+	function removeEventListeners()
+	{
+		window.removeEventListener("mousemove", onMousemove);
+		window.removeEventListener("mouseup", onMouseup);
+	}
+
+	useEffect(() =>
+	{
+		addEventListeners();
+		return () =>
+		{
+			removeEventListeners();
+		}
+	});
+
 	const chemicalElementsList = useMemo(() => chemElements.map((ce: iChemElement, idx: number) =>
 		<ChemElement
 			idx={idx}
@@ -35,12 +85,22 @@ const PeriodicTable = memo(function PeriodicTable({ chemElements, elementClickCb
 			className=""
 			key={ce.atomicNumber}
 			chemEl={ce}
+			onMousedown={onChemElementMousedown}
 			onClick={onChemElementClick}>
 		</ChemElement>
 	), []);
 
 	return (
-		<div className={`periodic-table ${className}`}>{chemicalElementsList}</div>
+		<>
+			{draggedElement ?
+				<ChemElement
+					ref={chemElRef}
+					className="dragged-element"
+					chemEl={draggedElement}>
+				</ChemElement>
+			: "" }
+			<div className={`periodic-table ${className}`}>{chemicalElementsList}</div>
+		</>
 	);
 });
 

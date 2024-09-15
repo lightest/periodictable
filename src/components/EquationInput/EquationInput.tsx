@@ -27,9 +27,16 @@ export function EquationInput()
         setLLMResponse(resp.response);
     }
 
+    async function handleCompleteClick()
+    {
+        const resp = await Networking.completeChemicalBalanceEquation(equationVal);
+        setLLMResponse(resp.response);
+    }
+
     return <>
         <input type="text" onChange={handleChange} onKeyDown={handleKeydown} value={equationVal}></input>
         <div className="btn" onClick={handleSolveClick}>solve</div>
+        <div className="btn" onClick={handleCompleteClick}>complete</div>
         <div>{llmResponse}</div>
     </>
 }
